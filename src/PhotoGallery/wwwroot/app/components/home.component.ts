@@ -2,10 +2,9 @@
 
 @Component({
     selector: 'home',
-    templateUrl: './app/components/home.html',
-    directives: []
+    templateUrl: './app/components/home.component.html'
 })
-export class Home {
+export class HomeComponent {
 
     constructor() {
 

@@ -1,12 +1,19 @@
-﻿import { Route, Router } from '@angular/router-deprecated';
-import { Login } from './login';
-import { Register } from './register';
-import { Home } from '../../components/home';
+﻿import { ModuleWithProviders }  from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
-export var Routes = {
-    login: new Route({ path: '/', name: 'Login', component: Login }),
-    register: new Route({ path: '/register', name: 'Register', component: Register }),
-    home: new Route({ path: '/home', name: 'Home', component: Home })
-};
+import { AccountComponent } from './account.component';
+import { LoginComponent } from './login.component';
+import { RegisterComponent } from './register.component';
 
-export const APP_ROUTES = Object.keys(Routes).map(r => Routes[r]);
+export const accountRoutes: Routes = [
+    {
+        path: 'account',
+        component: AccountComponent,
+        children: [
+            { path: 'register', component: RegisterComponent },
+            { path: 'login', component: LoginComponent }
+        ]
+    }
+];
+
+export const accountRouting: ModuleWithProviders = RouterModule.forChild(accountRoutes);

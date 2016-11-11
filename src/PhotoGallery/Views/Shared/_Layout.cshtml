@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewBag.Title</title>
-    @*<base href="/">*@
+    <base href="/">
 
     <link href="~/lib/css/bootstrap.css" rel="stylesheet" />
     <link href="~/lib/css/font-awesome.css" rel="stylesheet" />
@@ -19,11 +19,10 @@
 
     <!-- 1. Load libraries -->
     <!-- Polyfill(s) for older browsers -->
-    <script src="node_modules/es6-shim/es6-shim.min.js"></script>
-
-    <script src="node_modules/zone.js/dist/zone.js"></script>
-    <script src="node_modules/reflect-metadata/Reflect.js"></script>
-    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="~/lib/core-js/client/shim.js"></script>
+    <script src="~/lib/zone.js/dist/zone.js"></script>
+    <script src="~/lib/reflect-metadata/Reflect.js"></script>
+    <script src="~/lib/systemjs/dist/system.src.js"></script>
 
     <!-- 2. Configure SystemJS -->
     <script src="~/lib/js/systemjs.config.js"></script>

@@ -52,9 +52,20 @@ namespace PhotoGallery
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<PhotoGalleryContext>(options =>
-                options.UseSqlServer(Configuration["Data:PhotoGalleryConnection:ConnectionString"]));
+            string sqlConnectionString = Configuration["ConnectionStrings:DefaultConnection"];
+            bool useInMemoryProvider = bool.Parse(Configuration["Data:PhotoGalleryConnection:InMemoryProvider"]);
 
+            services.AddDbContext<PhotoGalleryContext>(options => {
+                switch (useInMemoryProvider)
+                {
+                    case true:
+                        options.UseInMemoryDatabase();
+                        break;
+                    default:
+                        options.UseSqlServer(sqlConnectionString);
+                    break;
+                }
+            });
 
             // Repositories
             services.AddScoped<IPhotoRepository, PhotoRepository>();
@@ -98,17 +109,7 @@ namespace PhotoGallery
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             // this will serve up wwwroot
-            app.UseFileServer();
-
-            // this will serve up node_modules
-            var provider = new PhysicalFileProvider(
-                Path.Combine(_contentRootPath, "node_modules")
-            );
-            var _fileServerOptions = new FileServerOptions();
-            _fileServerOptions.RequestPath = "/node_modules";
-            _fileServerOptions.StaticFileOptions.FileProvider = provider;
-            _fileServerOptions.EnableDirectoryBrowsing = true;
-            app.UseFileServer(_fileServerOptions);
+            app.UseStaticFiles();
 
             AutoMapperConfiguration.Configure();
 

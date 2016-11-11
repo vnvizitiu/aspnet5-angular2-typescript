@@ -1,39 +1,43 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { CORE_DIRECTIVES, FORM_DIRECTIVES } from '@angular/common';
-import { RouterLink, RouteParams } from '@angular/router-deprecated'
+import { Router, ActivatedRoute }  from '@angular/router';
 import { Photo } from '../core/domain/photo';
 import { Paginated } from '../core/common/paginated';
-import { DataService } from '../core/services/dataService';
-import { UtilityService } from '../core/services/utilityService';
-import { NotificationService } from '../core/services/notificationService';
+import { DataService } from '../core/services/data.service';
+import { UtilityService } from '../core/services/utility.service';
+import { NotificationService } from '../core/services/notification.service';
 import { OperationResult } from '../core/domain/operationResult';
+import { Subscription }  from 'rxjs/Subscription';
 
 @Component({
     selector: 'album-photo',
     providers: [NotificationService],
-    templateUrl: './app/components/albumPhotos.html',
-    directives: [RouterLink]
+    templateUrl: './app/components/album-photos.component.html'
 })
-export class AlbumPhotos extends Paginated implements OnInit {
+export class AlbumPhotosComponent extends Paginated implements OnInit {
     private _albumsAPI: string = 'api/albums/';
     private _photosAPI: string = 'api/photos/';
     private _albumId: string;
     private _photos: Array<Photo>;
     private _displayingTotal: number;
     private _albumTitle: string;
+    private sub: Subscription;
 
     constructor(public dataService: DataService,
                 public utilityService: UtilityService,
                 public notificationService: NotificationService,
-                public routeParam: RouteParams) {
+                private route: ActivatedRoute,
+                private router: Router) {
                 super(0, 0, 0);
     }
 
     ngOnInit() {
-        this._albumId = this.routeParam.get('id');
-        this._albumsAPI += this._albumId + '/photos/';
-        this.dataService.set(this._albumsAPI, 12);
-        this.getAlbumPhotos();
+
+        this.sub = this.route.params.subscribe(params => {
+            this._albumId = params['id']; // (+) converts string 'id' to a number
+            this._albumsAPI += this._albumId + '/photos/';
+            this.dataService.set(this._albumsAPI, 12);
+            this.getAlbumPhotos();
+        });
     }
 
     getAlbumPhotos(): void {

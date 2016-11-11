@@ -1,6 +1,6 @@
 ﻿import { Http, Response, Request } from '@angular/http';
 import { Injectable } from '@angular/core';
-import { DataService } from './dataService';
+import { DataService } from './data.service';
 import { Registration } from '../domain/registration';
 import { User } from '../domain/user';
 
@@ -31,7 +31,7 @@ export class MembershipService {
     }
 
     isUserAuthenticated(): boolean {
-        var _user: User = localStorage.getItem('user');
+        var _user: any = localStorage.getItem('user');
         if (_user != null)
             return true;
         else

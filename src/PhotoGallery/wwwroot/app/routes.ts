@@ -1,16 +1,35 @@
-﻿import { Route, Router } from '@angular/router-deprecated';
-import { Home } from './components/home';
-import { Photos } from './components/photos';
-import { Albums } from './components/albums';
-import { AlbumPhotos } from './components/albumPhotos';
-import { Account } from './components/account/account';
+﻿import { ModuleWithProviders }  from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
-export var Routes = {
-    home: new Route({ path: '/', name: 'Home', component: Home }),
-    photos: new Route({ path: '/photos', name: 'Photos', component: Photos }),
-    albums: new Route({ path: '/albums', name: 'Albums', component: Albums }),
-    albumPhotos: new Route({ path: '/albums/:id/photos', name: 'AlbumPhotos', component: AlbumPhotos }),
-    account: new Route({ path: '/account/...', name: 'Account', component: Account })
-};
+import { HomeComponent } from './components/home.component';
+import { PhotosComponent } from './components/photos.component';
+import { AlbumsComponent } from './components/albums.component';
+import { AlbumPhotosComponent } from './components/album-photos.component';
+import { accountRoutes, accountRouting } from './components/account/routes';
 
-export const APP_ROUTES = Object.keys(Routes).map(r => Routes[r]);
+
+const appRoutes: Routes = [
+    {
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full'
+    },
+    {
+        path: 'home',
+        component: HomeComponent
+    },
+    {
+        path: 'photos',
+        component: PhotosComponent
+    },
+    {
+        path: 'albums',
+        component: AlbumsComponent
+    },
+    {
+        path: 'albums/:id/photos',
+        component: AlbumPhotosComponent
+    }
+];
+
+export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
